@@ -37,99 +37,28 @@
             </div>
           </div>
           <div class="row main-col text-center header rounded mb-3">
-            <table>
-              <thead>
-              <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Address</th>
-                <th></th>
-                <th>Price</th>
-                <th>Active</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr class="p-1" v-for="(rentalObject, index) in this.cottages" :key="index" :class="index%2!==0?'odd':'even'">
-                <td class="col-1">
-                  <img v-if="rentalObject.photos.length !== 0" :src="imageUrls[index]" style="height: 6vh;width: 6vh" class="img-fluid rounded border-1" alt="">
-                  <font-awesome-icon v-else icon="user" class="img-fluid rounded border-1" style="height: 3vh"></font-awesome-icon>
-                </td>
-                <td>
-                  <router-link class="profile-link" :to="'/vacationRentalOwner/VacationRental/' + rentalObject.id">{{rentalObject.name}}</router-link>
-                </td>
-                <td>
-                  {{rentalObject.address.city + ", " + rentalObject.address.country}}
-                </td>
-                <td>
-                  <button :id="index" class="eye-btn border-0 text-decoration-none" type="button" data-bs-toggle="modal" :data-bs-target="'#profileModal' + index">
-                    <font-awesome-icon class="text-decoration-underline" icon="eye"></font-awesome-icon>
-                  </button>
-                  <div class="modal fade" :id="'profileModal' + index" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title">Vacation Rental Profile</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="row justify-content-center">
-                            <div class="row">
-                              <div class="col me-lg-3 me-md-2">
-                                <div class="row text-center">
-                                  <img v-if="rentalObject.photos.length !== 0" :src="imageUrls[index]" class="img-fluid rounded p-0" alt="">
-                                  <font-awesome-icon v-else icon="user" class="img-fluid rounded p-0" style="background-color: #B0B8B4FF; color: white"></font-awesome-icon>
-                                </div>
-                              </div>
-                              <div class="col">
-                                <div class="row text-center">
-                                  <div class="container-fluid rounded" style="border: 1px solid #008970; color: #008970" >
-                                    <h5>{{rentalObject.name}}</h5>
-                                    <hr>
-                                    <div class="row pb-5">
-                                      <div class="col text-start">
-                                        <h6>Price: <span style="color: black">{{rentalObject.price}}$</span></h6>
-                                        <h6>Description: <span style="color: black">{{rentalObject.description}}</span></h6>
-                                        <h6>Address: <span style="color: black">{{rentalObject.address.street + " " + rentalObject.address.number + ", " + rentalObject.address.city + ", " + rentalObject.address.country}}</span></h6>
-                                        <h6>Activity:
-                                          <input v-if="rentalObject.isActive" class="form-check-input" type="checkbox" checked disabled>
-                                          <input v-else class="form-check-input" type="checkbox" disabled></h6>
-                                        <h6>Capacity: <span style="color: black">{{rentalObject.capacity}}</span></h6>
-                                        <h6>Rules of Conduct:</h6>
-                                        <table class="rounded">
-                                          <thead style="background-color: transparent">
-                                          <tr>
-                                            <th style="background-color: #008970; color: #f7f7f2; ; border-bottom: #008970 1px solid">Do</th>
-                                            <th style="background-color: #e23c52; color: #f7f7f2; border-left: #008970 1px solid; border-bottom: #e23c52 1px solid">Don't</th>
-                                          </tr>
-                                          </thead>
-                                          <tbody>
-                                          <tr v-for="(rule, index) in rulesOfConduct(rentalObject.conductRules)" :key="index" :class="index%2!==0?'odd':'even'">
-                                            <td style="border-right: #008970 1px solid">{{rule.Do}}</td>
-                                            <td>{{rule.DoNot}}</td>
-                                          </tr>
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  {{rentalObject.price + "$"}}
-                </td>
-                <td>
-                  <input class="form-check-input" type="checkbox" :value="!rentalObject.isActive" v-model="rentalObject.isActive" @change="changeStatus(rentalObject)" :disabled="!rentalObject.isDeletable">
-                </td>
-              </tr>
-              </tbody>
-            </table>
+            <div class="card" v-for="(rentalObject, index) in this.cottages" :key="index" style="width:275px; margin: 0.5%; border-color: #008970">
+              <img v-if="rentalObject.photos.length !== 0" :src="imageUrls[index]" style="width:100%" class="img-fluid rounded border-1" alt="">
+              <div class="card-body">
+                <router-link to="#" style="color: #008970">
+                <h4 class="card-title">{{ rentalObject.name }}</h4>
+                  <hr class="ms-1">
+                </router-link>
+                <div class="row">
+                  <h5>
+                    <font-awesome-icon class="my-auto" icon="location-dot"></font-awesome-icon>:
+                    {{rentalObject.address.city + ", " + rentalObject.address.country}}
+                  </h5>
+                  <h5>
+                    <font-awesome-icon class="my-auto" icon="dollar-sign"></font-awesome-icon>:
+                    {{rentalObject.price + "$"}}
+                  </h5>
+                  <h5>
+                    Active: <input class="form-check-input" type="checkbox" :value="!rentalObject.isActive" v-model="rentalObject.isActive" @change="changeStatus(rentalObject)" :disabled="!rentalObject.isDeletable">
+                  </h5>
+                </div>
+              </div>
+            </div>
             <nav aria-label="Page navigation">
               <ul class="pagination justify-content-center mt-3">
                 <li class="page-item" v-if="totalPages > 1"><button class="page-link" :disabled="currentPage===0" @click="previousPage">Previous</button></li>
@@ -154,12 +83,12 @@
 import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {library} from "@fortawesome/fontawesome-svg-core";
-import {faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight, faFrown, faPlus}
+import {faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight, faFrown, faPlus, faLocationDot, faDollarSign}
   from "@fortawesome/free-solid-svg-icons";
 import {useStore} from "vuex";
 import {toggleLoading, toggleProcessing} from "@/components/state";
 
-library.add(faAngleRight, faAngleLeft, faFrown, faAngleDoubleRight, faAngleDoubleLeft, faPlus);
+library.add(faAngleRight, faAngleLeft, faFrown, faAngleDoubleRight, faAngleDoubleLeft, faPlus, faLocationDot, faDollarSign);
 
 export default {
   name: "AllCottagesView",
@@ -420,8 +349,8 @@ export default {
 </script>
 
 <style scoped>
-
-.profile-link {
-  color: #008970;
+div.card {
+  border-radius: 20px;
+  box-shadow:  0 0.3rem 1rem rgb(0 0 0 / 30%);
 }
 </style>
