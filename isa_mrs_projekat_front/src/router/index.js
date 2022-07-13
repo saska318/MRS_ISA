@@ -66,6 +66,7 @@ import OwnerReservationCreationPage
     from "@/components/BoatOwner/BoatOwnerPage/components/BoatOwnerMainView/OwnerReservationCreationPage";
 import ClientReservationPage
     from "@/components/Client/ClientPage/components/ClientReservationPage/ClientReservationPage";
+import EditPersonalData from "@/components/VacationRentalOwner/VacationRentalOwnerPage/components/EditPersonalData";
 //import InstructorCardView from "@/components/UnregisteredUser/components/InstructorCardView";
 
 
@@ -529,7 +530,7 @@ const routes = [
         path: "/vacationRentalOwner/profile/:id",
         name: "VacationRentalOwnerProfileUpdate",
         components: {
-            default: RegistrationPage,
+            default: EditPersonalData,
             sidebar: TheOwnerSidebar,
         },
         meta: {
@@ -650,7 +651,7 @@ const routes = [
         path: "/boatOwner/profile/:id",
         name: "boatOwnerProfileUpdate",
         components: {
-            default: RegistrationPage,
+            default: EditPersonalData,
             sidebar: TheBoatOwnerSidebar,
         },
         meta: {

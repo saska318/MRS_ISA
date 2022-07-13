@@ -26,4 +26,5 @@ public interface UserService {
                                                                                       String field, UserType type);
     ResponseEntity<NewUserBasicInfoDto> getUser(String token);
     ResponseEntity<NewUserBasicInfoDto> updateUser(NewUserBasicInfoDto newUserBasicInfoDto);
+    ResponseEntity<UserDto> updateUserData(UpdateUserDto updateUserDto, String token);
 }

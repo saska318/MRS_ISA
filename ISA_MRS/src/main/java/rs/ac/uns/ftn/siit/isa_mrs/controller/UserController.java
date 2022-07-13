@@ -103,4 +103,9 @@ public class UserController {
         private String oldPassword;
         private String newPassword;
     }
+
+    @PutMapping("/editUser")
+    public ResponseEntity<UserDto> updateUserData(@RequestBody UpdateUserDto updateUserDto, HttpServletRequest request) {
+        return userService.updateUserData(updateUserDto, request.getHeader(AUTHORIZATION));
+    }
 }

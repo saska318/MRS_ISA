@@ -5,7 +5,7 @@
       <div class="container px-4 py-3 rounded form" spellcheck="false" >
         <div class="container-fluid">
           <h3>Edit personal data</h3>
-          <div class="row main justify-content-center">
+          <div class="row main justify-content-center" style="margin-top: 5%; margin-bottom: 3%">
             <div class="row main">
               <div class="col main">
                 <div class="row">
@@ -28,7 +28,7 @@
                     </div>
                     <div class="row">
                       <label for="phone">Phone</label>
-                      <vue-tel-input :key="user.phone" v-model="phoneInput" id="phone" mode="international" defaultCountry="RS" :onlyCountries=onlyCountries @input="onTelephoneInput"></vue-tel-input>
+                      <vue-tel-input v-model="user.phone" id="phone" mode="international" defaultCountry="RS" :onlyCountries=onlyCountries @input="onTelephoneInput"></vue-tel-input>
                       <p v-if='!phoneIsValid'>Invalid phone number.</p>
                     </div>
                   </div>
@@ -71,7 +71,8 @@
             </div>
           </div>
           <div class="d-flex pt-3 justify-content-center">
-            <router-link to="../" class="btn btn-red mt-3 me-1">Cancel</router-link>
+            <router-link v-if="isVacationRentalOwner" to="/vacationRentalOwner/profile" class="btn btn-red mt-3 me-1">Cancel</router-link>
+            <router-link v-else-if="isBoatOwner" to="/boatOwner/profile" class="btn btn-red mt-3 me-1">Cancel</router-link>
             <button type="button" class="btn mt-3" @click="submit">Submit</button>
           </div>
         </div>
@@ -82,12 +83,10 @@
 </template>
 
 <script>
-
 import { VueTelInput }  from 'vue3-tel-input';
 import 'vue3-tel-input/dist/vue3-tel-input.css';
 import axios from "axios";
 import {toggleProcessing} from "@/components/state";
-
 export default {
   name: "EditPersonalData",
   components: {VueTelInput},
@@ -142,6 +141,12 @@ export default {
     },
     isNumberEntered() {
       return Boolean(this.user.address.number);
+    },
+    isVacationRentalOwner() {
+      return this.$store.getters.user === "vacationRentalOwner";
+    },
+    isBoatOwner() {
+      return this.$store.getters.user === "boatOwner";
     }
   },
   methods: {
@@ -299,26 +304,29 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 textarea {
   resize: none;
   width: 100%;
   text-align: justify;
 }
-
 input[type='text'], input[type='email'] {
   width: 100%;
+  border-color: #008970;
 }
-
 input::placeholder {
   color: grey;
 }
-
 h3 {
   text-align: center;
 }
 p {
   color: #e23c52;
+}
+
+label {
+  color: #008970;
+  font-style: italic;
+  font-size: large;
 }
 </style>
