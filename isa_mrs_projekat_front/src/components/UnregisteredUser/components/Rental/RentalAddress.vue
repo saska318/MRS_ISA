@@ -1,5 +1,5 @@
 <template>
-  <p class="h4">
+  <p class="h4" style="font-family: Cambria">
     <font-awesome-icon class="me-1" icon="location-dot" style="color: #008970"></font-awesome-icon><small>{{ getAddress }}</small>
   </p>
   <div class="map-wrap">
