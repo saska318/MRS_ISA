@@ -40,7 +40,7 @@
             <div class="card" v-for="(rentalObject, index) in this.boats" :key="index" style="width:275px; margin: 0.5%; border-color: #008970">
               <img v-if="rentalObject.photos.length !== 0" :src="imageUrls[index]" style="width:100%" class="img-fluid rounded border-1" alt="">
               <div class="card-body">
-                <router-link to="#" style="color: #008970">
+                <router-link :to="'/boatOwner/Boat/' + rentalObject.id" style="color: #008970">
                   <h4 class="card-title">{{ rentalObject.name }}</h4>
                   <hr class="ms-1">
                 </router-link>
