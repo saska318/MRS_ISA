@@ -5,22 +5,13 @@
     </div>
     <div class="doOrDont d-flex justify-content-center">
         <div class="col-md-4 pe-3">
-            <div class="center-block text-center">
-                <p class="h4"><strong>Do</strong></p>
-            </div>
-            <p v-for="(r, i) in dos" :key="i" class="h5"><font-awesome-icon class="me-1" icon="circle-check" style="color:#008970"></font-awesome-icon>
+            <p v-for="(r, i) in dos" :key="i" class="h6"><font-awesome-icon class="me-1" icon="circle-check" style="color:#008970"></font-awesome-icon>
                 {{r.rule}}</p>
         </div>
         <div class="col-md-4 ps-3">
-            <div class="center-block text-center">
-                <p class="h4"><strong>Don't</strong></p>
-            </div>
-            <p v-for="(r, i) in donts" :key="i" class="h5"><font-awesome-icon class="me-1" icon="circle-xmark" style="color:#e23c52"></font-awesome-icon>
+            <p v-for="(r, i) in donts" :key="i" class="h6"><font-awesome-icon class="me-1" icon="circle-xmark" style="color:#e23c52"></font-awesome-icon>
                 {{r.rule}}</p>
         </div>
-    </div>
-    <div>
-      <hr class="mt-3 ">
     </div>
 </template>
 
