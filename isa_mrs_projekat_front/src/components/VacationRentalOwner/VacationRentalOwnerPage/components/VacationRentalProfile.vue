@@ -104,22 +104,32 @@
           <div class="" style="">
             <RentalDescription :description="this.rentalObject.description"/>
 
-            <RentalTags :additional-services="this.rentalObject.additionalServices"/>
             <RentalRules :conduct-rules="this.rentalObject.conductRules"/>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-1"></div>
-      <div class="col-md-5">
-        <div class="row mb-5" >
-          <div class="col-10 p-0 px-2 m-0">
-            <RentalAddress :address="this.rentalObject.address"/>
-          </div>
-        </div>
-      </div>
-    </div>
 
-      <div class="col-md-6" >
+            <div class="lineTitle">
+              <p class="h3"><strong>Availability period</strong></p>
+              <hr class="ms-1">
+            </div>
+            <div class="row justify-content-center">
+              <date-picker :key="rentalObject.id" v-model="range" is-range :first-day-of-week=2 @drag="rangeChanged=true"></date-picker>
+            </div>
+            <div v-if="rangeChanged" class="row mt-1 justify-content-center">
+              <button class="btn default" style="max-width: fit-content" @click="updatePeriod">Save changes</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div v-if="isVacationRental" class="row main mb-3">
+          <div class="lineTitle">
+            <p class="h3"><strong>Included services</strong></p>
+            <hr class="ms-1">
+          </div>
+          <div class="tags row ps-3 pe-1 mb-1">
+          <RentalTags :additional-services="this.rentalObject.additionalServices" />
+          </div>
+        </div>
 
         <div v-if="isBoat" class="row main mb-3">
           <div class="lineTitle">
@@ -145,6 +155,16 @@
           </div>
         </div>
 
+        <div class="row mb-5" >
+          <div class="col-12 p-0 px-2 m-0">
+            <RentalAddress :address="this.rentalObject.address"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div class="col-md-6" >
+
     </div>
   </div>
 
@@ -162,7 +182,9 @@ import { faBed, faCircleCheck, faCircleXmark, faClock, faDoorOpen, faLocationDot
 import axios from "axios/index";
 import {useStore} from "vuex";
 import StarRating from 'vue-star-rating';
+import {DatePicker} from "v-calendar";
 import store from "@/store";
+import {toggleProcessing} from "@/components/state";
 
 
 library.add(faUser, faDoorOpen, faBed, faClock, faLocationDot, faCircleCheck, faCircleXmark, faUserTie, faPencil, faTrash, faTag, faBookmark, faShip, faRuler, faGauge);
@@ -170,7 +192,7 @@ library.add(faUser, faDoorOpen, faBed, faClock, faLocationDot, faCircleCheck, fa
 export default {
   name: "VacationRentalProfile",
   components: {
-    RentalRules, RentalAddress, RentalTags, RentalDescription, ImageSlider, FontAwesomeIcon, StarRating},
+    RentalRules, RentalAddress, RentalTags, RentalDescription, ImageSlider, FontAwesomeIcon, StarRating, DatePicker},
   data() {
     return {
       rentalObject: null,
@@ -179,6 +201,11 @@ export default {
       pageSize: 6,
       images: [],
       bedsPerRoom: null,
+      range: {
+        start: null,
+        end: null
+      },
+      rangeChanged: false
     }
   },
   computed: {
@@ -263,6 +290,49 @@ export default {
         result += " + ";
       }
       this.bedsPerRoom = result;
+    },
+    updatePeriod() {
+      toggleProcessing();
+      const start = this.range.start.toISOString().slice(0, 19);
+      const end = this.range.end.toISOString().slice(0, 19);
+      axios.put("/RentalObjects/updateAvailabilityPeriod", null, {
+        headers: {
+          Authorization: "Bearer " + this.$store.getters.access_token
+        },
+        params: {
+          id: this.$route.params.id,
+          start: start,
+          end: end
+        }
+      })
+          .then(response => {
+            this.range.start = response.data.initDate;
+            this.range.end = response.data.termDate;
+            toggleProcessing();
+            this.$notify( {
+              title: "Successful update",
+              text: "You have successfully set availability period.",
+              position: "bottom right",
+              type: "success"
+            });
+          })
+          .catch((error) => {
+            toggleProcessing();
+            if (!error.response) {
+              this.$notify({
+                title: "Server error",
+                text: "Server is currently off. Please try again later...",
+                type: "error"
+              });
+            } else if (error.response.status === 500) {
+              this.$notify({
+                title: "Internal Server Error",
+                text: "Something went wrong on the server! Please try again later...",
+                position: "bottom right",
+                type: "error"
+              })
+            }
+          });
     }
   },
 }

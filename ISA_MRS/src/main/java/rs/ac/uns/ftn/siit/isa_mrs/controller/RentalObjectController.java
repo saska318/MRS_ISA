@@ -202,4 +202,9 @@ public class RentalObjectController {
     public ResponseEntity<RentalObjectDto> addSpecialOfferBoat(@RequestBody SpecialOfferRentalDto dto) {
         return specialOfferService.addSpecialOfferBoat(dto);
     }
+
+    @PutMapping("/updateAvailabilityPeriod")
+    public ResponseEntity<rs.ac.uns.ftn.siit.isa_mrs.dto.BackToFrontDto.RentalProfileDtos.RentalObjectDto> updateAvailabilityPeriod(@RequestParam Long id, @RequestParam String start, @RequestParam String end, HttpServletRequest request) {
+        return rentalObjectService.updateAvailabilityPeriod(id, start, end, request.getHeader(AUTHORIZATION));
+    }
 }

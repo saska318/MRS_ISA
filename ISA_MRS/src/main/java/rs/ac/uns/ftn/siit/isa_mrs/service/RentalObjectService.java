@@ -29,4 +29,5 @@ public interface RentalObjectService {
     GraphDto getLastMonthRentalReservationsGraph(String token);
     GraphDto getLastWeekRentalReservationsGraph(String token);
     ResponseEntity<ReservationRentalLimitsDto> getReservationRentalLimits(long rentalId, String token);
+    ResponseEntity<rs.ac.uns.ftn.siit.isa_mrs.dto.BackToFrontDto.RentalProfileDtos.RentalObjectDto> updateAvailabilityPeriod(Long id, String start, String end, String token);
 }

@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.siit.isa_mrs.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Local;
 import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -310,6 +311,29 @@ public class RentalObjectServiceImpl implements RentalObjectService {
             result.setClients(clients);
             result.setReservationsPeriods(timePeriodDtos);
             return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<rs.ac.uns.ftn.siit.isa_mrs.dto.BackToFrontDto.RentalProfileDtos.RentalObjectDto> updateAvailabilityPeriod(Long id, String start, String end, String token) {
+        try {
+            JwtDecoder.DecodedToken decodedToken;
+            try {
+                decodedToken = jwtDecoder.decodeToken(token);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            Optional<RentalObject> object = rentalObjectRepo.findById(id);
+            if(object.isEmpty()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            RentalObject rentalObject = object.get();
+            rentalObject.setInitDate(LocalDateTime.parse(start));
+            rentalObject.setTermDate(LocalDateTime.parse(end));
+            rentalObjectRepo.save(rentalObject);
+            return new ResponseEntity<>(modelMapper.map(rentalObject, rs.ac.uns.ftn.siit.isa_mrs.dto.BackToFrontDto.RentalProfileDtos.RentalObjectDto.class), HttpStatus.OK);
         }
         catch (Exception e) {
             log.error(e.getMessage());
