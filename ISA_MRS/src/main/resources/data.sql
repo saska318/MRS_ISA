@@ -521,3 +521,9 @@ INSERT INTO service (id, name, special_offer_id) VALUES (5, 'Protective geer', 3
 
 INSERT INTO reservation (id, price, equipment_required, people, time_stamp, client_id, rental_object_id, cancelled, init_date, term_date) VALUES (26, 80, false, 1, '2022-06-19 15:26:41', 3, 18, false, '2022-06-22 12:00:00', '2022-06-22 18:30:00');
 INSERT INTO income (id, fee, time_stamp, value, reservation_id) VALUES (26, 10, '2022-06-19 15:26:41', 8, 26);
+
+INSERT INTO reservation (id, price, equipment_required, people, time_stamp, client_id, rental_object_id, cancelled, init_date, term_date) VALUES (27, 250, false, 5, '2022-08-20 15:26:41', 6, 1, false, '2022-08-25 12:00:00', '2022-08-28 18:30:00');
+INSERT INTO income (id, fee, time_stamp, value, reservation_id) VALUES (27, 20, '2022-08-19 15:26:41', 10, 27);
+
+INSERT INTO reservation (id, price, equipment_required, people, time_stamp, client_id, rental_object_id, cancelled, init_date, term_date) VALUES (28, 450, false, 7, '2022-08-15 15:26:41', 6, 2, false, '2022-08-23 12:00:00', '2022-08-29 18:30:00');
+INSERT INTO income (id, fee, time_stamp, value, reservation_id) VALUES (28, 10, '2022-08-20 15:26:41', 10, 28);

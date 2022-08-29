@@ -29,7 +29,7 @@
                   </div>
                 </div>
 
-                <div class="row justify-content-center mt-2">
+                <div v-if="isBoatOwner" class="row justify-content-center mt-2">
                   <input class="form-check-input" type="checkbox" id="equipment" v-model="isEquipmentNeeded">
                   <label for="equipment">Is Equipment needed?</label>
                 </div>
@@ -37,7 +37,8 @@
               </div>
               <div class="col-3"></div>
               <div class="d-flex pt-3 justify-content-center">
-                <router-link to="../" class="btn btn-red mt-3 me-1">Cancel</router-link>
+                <router-link v-if="isVacationRentalOwner" to="/vacationRentalOwner/cottages" class="btn btn-red mt-3 me-1">Cancel</router-link>
+                <router-link v-else to="/boatOwner/boats/" class="btn btn-red mt-3 me-1">Cancel</router-link>
                 <button type="button" class="btn mt-3" @click.prevent="book">Submit</button>
               </div>
             </div>
@@ -97,6 +98,14 @@ export default {
         })
         .catch()
   },
+  computed: {
+    isVacationRentalOwner() {
+      return this.$store.getters.user === "vacationRentalOwner";
+    },
+    isBoatOwner() {
+      return this.$store.getters.user === "boatOwner";
+    }
+  },
   methods: {
     isDataEntered() {
       if (this.date === null) {
@@ -123,21 +132,22 @@ export default {
             Authorization: "Bearer " + store.getters.access_token,
           }
         })
-            .then(() => {
-              this.$notify( {
-                title: "Successful reservation",
-                text: "You have successfully booked adventure for client.",
-                position: "bottom right",
-                type: "success"
-              });
-            })
-            .catch(() => {
-              this.$notify({
-                title: "Server error",
-                text: "Server is currently off. Please try again later...",
-                type: "error"
-              });
-            })
+        .then(() => {
+          this.$notify({
+            title: "Successful reservation",
+            text:"You have successfully booked for a client.",
+            position: "bottom right",
+            type: "success"
+          });
+        })
+        .catch(() => {
+          this.$notify({
+            title: "Server error",
+            text: "Serever is currently off. Please try again later...",
+            position: "bottom right",
+            type: "error"
+          });
+        })
       }
     }
   }
