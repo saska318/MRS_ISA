@@ -527,3 +527,8 @@ INSERT INTO income (id, fee, time_stamp, value, reservation_id) VALUES (27, 20, 
 
 INSERT INTO reservation (id, price, equipment_required, people, time_stamp, client_id, rental_object_id, cancelled, init_date, term_date) VALUES (28, 450, false, 7, '2022-08-15 15:26:41', 6, 2, false, '2022-08-23 12:00:00', '2022-08-29 18:30:00');
 INSERT INTO income (id, fee, time_stamp, value, reservation_id) VALUES (28, 10, '2022-08-20 15:26:41', 10, 28);
+
+INSERT INTO reservation (id, price, equipment_required, people, time_stamp, client_id, rental_object_id, cancelled, init_date, term_date) VALUES (29, 350, false, 5, '2022-08-31 15:26:41', 3, 10, false, '2022-09-11 12:00:00', '2022-09-15 18:30:00');
+INSERT INTO income (id, fee, time_stamp, value, reservation_id) VALUES (29, 20, '2022-09-04 15:26:41', 8, 29);
+INSERT INTO reservation (id, price, equipment_required, people, time_stamp, client_id, rental_object_id, cancelled, init_date, term_date) VALUES (30, 500, false, 4, '2022-08-30 15:26:41', 6, 9, false, '2022-09-13 12:00:00', '2022-09-18 18:30:00');
+INSERT INTO income (id, fee, time_stamp, value, reservation_id) VALUES (30, 15, '2022-09-07 15:26:41', 7, 30);

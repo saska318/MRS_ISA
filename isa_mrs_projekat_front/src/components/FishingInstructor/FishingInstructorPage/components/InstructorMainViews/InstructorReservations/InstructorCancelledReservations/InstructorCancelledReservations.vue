@@ -1,55 +1,57 @@
 <template>
-  <div v-for="(reservation, i) in reservations" :key="i" class="card reservation mb-3 px-0">
-    <div class="row">
-      <div class="col-md-4" >
-        <router-link :to="getPath(reservation)" class="link" @click="setRentalIdAndType(reservation)">
-          <img v-if="images[i]" class="rentalPhoto" :src="images[i]" alt=""/>
-        </router-link>
-      </div>
-      <div class="col-md-4">
-        <div class="row">
-          <div class="rentalObjectName align-items-center text-start" style="display: flex;">
-            <div>
-              <h1 class="display-6 me-1 card-title cut-text">{{ reservation.rentalObject.name }}</h1>
+  <div class="row main-col">
+    <div v-for="(reservation, i) in reservations" :key="i" class="card reservation mb-3 px-0" style="margin: 2%">
+      <div class="row">
+        <div class="col-md-6" >
+          <router-link :to="getPath(reservation)" class="link" @click="setRentalIdAndType(reservation)">
+            <img v-if="images[i]" class="rentalPhoto" :src="images[i]" alt=""/>
+          </router-link>
+        </div>
+
+        <div class="col-md-6 p-4 d-flex flex-grow-1 justify-content-center align-items-center" style="height: 25vh;">
+          <div style="width: 95%;">
+            <div class="row mt-1">
+              <p class="h3" style="color:#e23c52;">
+                <strong>
+                  <font-awesome-icon icon="x"></font-awesome-icon>&emsp;CANCELLED
+                </strong>
+              </p>
             </div>
-            <hr>
+            <div class="row">
+              <button class="w-100 btn mb-2" style="font-weight: 500; color: white;" data-bs-toggle="modal"
+                      :data-bs-target="'#clientProfile-'+reservation.id">
+                Client Preview
+              </button>
+              <InstructorClientPreview :client="reservation.client"
+                                       :reservationId="reservation.id"/>
+            </div>
           </div>
         </div>
+
         <div class="row">
-          <p class="h4" ><strong style="color:#008970;">Date:</strong> {{  getDateSpan(reservation) }}</p>
-        </div>
-        <div class="row">
-          <p class="h4"><strong style="color:#008970;">Profit:</strong> ${{
-              (calculateCancellationInstructorIncome(reservation)).toFixed(2) }}</p>
-        </div>
-        <div class="row mt-1">
-          <p class="h3" style="color:#e23c52;">
-            <strong>
-              <font-awesome-icon icon="x"></font-awesome-icon>&emsp;CANCELLED
-            </strong>
-          </p>
-        </div>
-      </div>
-      <div class="col-md-4 p-5 d-flex flex-grow-1 justify-content-center align-items-center" style="height: 25vh;">
-        <div style="width: 100%;">
           <div class="row">
-            <button class="w-100 btn mb-2" style="font-weight: 500; color: white;" data-bs-toggle="modal"
-                    :data-bs-target="'#clientProfile-'+reservation.id">
-              Client Preview
-            </button>
-            <InstructorClientPreview :client="reservation.client"
-                                     :reservationId="reservation.id"/>
+            <div class="rentalObjectName align-items-center text-start" style="display: flex;">
+              <div>
+                <h1 class="display-6 me-1 card-title cut-text">{{ reservation.rentalObject.name }}</h1>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <p class="h5" ><strong style="color:#008970;">Date:</strong> {{  getDateSpan(reservation) }}</p>
+          </div>
+          <div class="row">
+            <p class="h5"><strong style="color:#008970;">Profit:</strong> ${{
+                (calculateCancellationInstructorIncome(reservation)).toFixed(2) }}</p>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import axios from "axios";
+
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -65,7 +67,6 @@ export default {
   components: {FontAwesomeIcon, InstructorClientPreview},
   data() {
     return {
-      // images: [],
     }
   },
   methods: {
@@ -90,8 +91,6 @@ export default {
     getDateSpan(reservation) {
       let initDate = reservation.initDate, termDate = reservation.termDate;
       let date1 = new Date(initDate), date2 = new Date(termDate);
-      // date1.setHours(0, 0, 0);
-      // date2.setHours(0, 0, 0);
       let dateDisplay = date1.getDate() + '.' + (date1.getMonth() + 1) + '.' +  date1.getFullYear() + '.';
       if(date1.getFullYear() !== date2.getFullYear() || date1.getMonth() !== date2.getMonth() || date1.getDate() !== date2.getDate())
         dateDisplay += ' - ' + date2.getDate() + '.' + (date2.getMonth() + 1) + '.' +  date2.getFullYear() + '.';
@@ -165,6 +164,7 @@ img.rentalPhoto {
   flex-direction: column;
   height: fit-content;
   min-width: 0;
+  width: 45%;
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;

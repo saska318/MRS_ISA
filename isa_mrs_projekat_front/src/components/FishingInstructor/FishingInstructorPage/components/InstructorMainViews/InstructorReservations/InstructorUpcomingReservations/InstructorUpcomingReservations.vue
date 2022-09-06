@@ -1,54 +1,57 @@
 <template>
-  <div v-for="(reservation, i) in reservations" :key="i" class="card reservation mb-3 px-0">
-    <div class="row">
-      <div class="col-md-4" >
-        <router-link :to="getPath(reservation)" class="link" @click="setRentalIdAndType(reservation)">
-          <img v-if="images[i]" class="rentalPhoto" :src="images[i]" alt=""/>
-        </router-link>
-      </div>
-      <div class="col-md-4">
-        <div class="row">
-          <div class="rentalObjectName align-items-center text-start" style="display: flex;">
-            <div>
-              <h1 class="display-6 me-1 card-title cut-text">{{ reservation.rentalObject.name }}</h1>
+  <div class="row">
+    <div v-for="(reservation, i) in reservations" :key="i" class="card reservation mb-3 px-0" style="margin: 2%">
+      <div class="row">
+        <div class="col-md-7" >
+          <router-link :to="getPath(reservation)" class="link" @click="setRentalIdAndType(reservation)">
+            <img v-if="images[i]" class="rentalPhoto" :src="images[i]" alt=""/>
+          </router-link>
+        </div>
+        <div class="col-md-5 p-4 d-flex flex-grow-1 justify-content-center align-items-center" style="height: 25vh;">
+          <div style="width: 95%;">
+            <div class="row">
+              <button class="w-100 btn mb-2" style="font-weight: 500; color: white;" data-bs-toggle="modal"
+                      :data-bs-target="'#addServices-'+reservation.id">
+                Services
+              </button>
+              <InstructorReservationServices :additionalServices="reservation.additionalServices"
+                                             :resId="reservation.id"
+                                             :specialOffer="reservation.specialOffer"/>
             </div>
-            <hr>
+            <div class="row">
+              <button class="w-100 btn mb-2" style="font-weight: 500; color: white;" data-bs-toggle="modal"
+                      :data-bs-target="'#clientProfile-'+reservation.id">
+                Client Preview
+              </button>
+              <InstructorClientPreview :client="reservation.client"
+                                       :reservationId="reservation.id"/>
+            </div>
           </div>
         </div>
+
         <div class="row">
-          <p class="h4"><strong style="color:#008970;">Date:</strong> {{  getDateSpan(reservation) }}</p>
-        </div>
-        <div class="row">
-          <p class="h4">
-            <font-awesome-icon v-if="reservation.equipmentRequired" icon="check" style="color:#008970;"></font-awesome-icon>
-            <font-awesome-icon v-else icon="x" style="color:#e23c52;"></font-awesome-icon>
-            Equipment
-          </p>
-        </div>
-        <div class="row">
-          <p class="h4"><strong style="color:#008970;">Profit:</strong>
-            ${{ (calculateTotal(reservation)-reservation.income.value).toFixed(2) }}
-          </p>
-        </div>
-      </div>
-      <div class="col-md-4 p-5 d-flex flex-grow-1 justify-content-center align-items-center" style="height: 25vh;">
-        <div style="width: 100%;">
           <div class="row">
-            <button class="w-100 btn mb-2" style="font-weight: 500; color: white;" data-bs-toggle="modal"
-                    :data-bs-target="'#addServices-'+reservation.id">
-              Services
-            </button>
-            <InstructorReservationServices :additionalServices="reservation.additionalServices"
-                                           :resId="reservation.id"
-                                           :specialOffer="reservation.specialOffer"/>
+            <div class="rentalObjectName align-items-center text-start" style="display: flex;">
+              <div>
+                <h1 class="display-6 me-1 card-title cut-text">{{ reservation.rentalObject.name }}</h1>
+              </div>
+              <hr>
+            </div>
           </div>
           <div class="row">
-            <button class="w-100 btn mb-2" style="font-weight: 500; color: white;" data-bs-toggle="modal"
-                    :data-bs-target="'#clientProfile-'+reservation.id">
-              Client Preview
-            </button>
-            <InstructorClientPreview :client="reservation.client"
-                                     :reservationId="reservation.id"/>
+            <p class="h5"><strong style="color:#008970;">Date:</strong> {{  getDateSpan(reservation) }}</p>
+          </div>
+          <div class="row">
+            <p class="h5"><strong style="color:#008970;">Profit:</strong>
+              ${{ (calculateTotal(reservation)-reservation.income.value).toFixed(2) }}
+            </p>
+          </div>
+          <div class="row">
+            <p class="h5">
+              <font-awesome-icon v-if="reservation.equipmentRequired" icon="check" style="color:#008970;"></font-awesome-icon>
+              <font-awesome-icon v-else icon="x" style="color:#e23c52;"></font-awesome-icon>
+              Equipment
+            </p>
           </div>
         </div>
       </div>
@@ -57,7 +60,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
@@ -74,7 +77,6 @@ export default {
   props: ["reservations", "images"],
   data() {
     return {
-      // images: [],
     }
   },
 
@@ -92,8 +94,6 @@ export default {
     getDateSpan(reservation) {
       let initDate = reservation.initDate, termDate = reservation.termDate;
       let date1 = new Date(initDate), date2 = new Date(termDate);
-      // date1.setHours(0, 0, 0);
-      // date2.setHours(0, 0, 0);
       let dateDisplay = date1.getDate() + '.' + (date1.getMonth() + 1) + '.' +  date1.getFullYear() + '.';
       if(date1.getFullYear() !== date2.getFullYear() || date1.getMonth() !== date2.getMonth() || date1.getDate() !== date2.getDate())
         dateDisplay += ' - ' + date2.getDate() + '.' + (date2.getMonth() + 1) + '.' +  date2.getFullYear() + '.';
@@ -167,6 +167,7 @@ img.rentalPhoto {
   flex-direction: column;
   height: fit-content;
   min-width: 0;
+  width: 45%;
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;

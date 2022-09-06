@@ -1,66 +1,67 @@
 <template>
-  <div v-for="(reservation, i) in reservations" :key="i" class="card reservation mb-3 px-0">
-    <div class="row">
-      <div class="col-md-4" >
-        <router-link :to="getPath(reservation)" class="link" @click="setRentalIdAndType(reservation)">
-          <img v-if="images[i]" class="rentalPhoto" :src="images[i]" alt=""/>
-        </router-link>
-      </div>
-      <div class="col-md-4">
-        <div class="row">
-          <div class="rentalObjectName align-items-center text-start" style="display: flex;">
-            <div>
-              <h1 class="display-6 me-1 card-title cut-text">{{ reservation.rentalObject.name }}</h1>
+  <div class="row main-col">
+    <div v-for="(reservation, i) in reservations" :key="i" class="card reservation mb-3 px-0" style="margin: 2%">
+      <div class="row">
+        <div class="col-md-7" >
+          <router-link :to="getPath(reservation)" class="link" @click="setRentalIdAndType(reservation)">
+            <img v-if="images[i]" class="rentalPhoto" :src="images[i]" alt=""/>
+          </router-link>
+        </div>
+
+        <div class="col-md-5 p-4 d-flex flex-grow-1 justify-content-center align-items-center" style="height: 25vh;">
+          <div style="width: 95%;">
+            <div class="row">
+              <button class="w-100 btn mb-2" style="font-weight: 500; color: white; border:none" data-bs-toggle="modal"
+                      :data-bs-target="'#clientProfile-'+reservation.id">
+                Client Preview
+              </button>
+              <InstructorClientPreview :client="reservation.client"
+                                       :reservationId="reservation.id"/>
             </div>
-            <hr>
+            <div class="row">
+              <button class="w-100 btn mb-2" style="font-weight: 500; background-color:#ffd055; color: white; border:none" data-bs-toggle="modal"
+                      :data-bs-target="'#review-'+reservation.id">
+                Review
+              </button>
+              <InstructorReservationReview :id="reservation.id"
+                                           :reviews="reservation.reviews"
+                                           :resId="reservation.id"/>
+            </div>
+            <div class="row">
+              <button class="w-100 btn" style="background-color:#e23c52; border: none;
+                              font-weight: 500; color: white;" data-bs-toggle="modal"
+                      :data-bs-target="'#report-'+reservation.id">
+                Report
+              </button>
+              <InstructorReservationReport :id="reservation.id"
+                                           :resId="reservation.id"
+                                           :reports="reservation.reports"/>
+            </div>
           </div>
         </div>
         <div class="row">
-          <p class="h4" ><strong style="color:#008970;">Date:</strong> {{  getDateSpan(reservation) }}</p>
-        </div>
-        <div class="row">
-          <p class="h4"><strong style="color:#008970;">Profit:</strong> ${{ (calculateTotal(reservation)-reservation.income.value).toFixed(2) }}</p>
-        </div>
-      </div>
-      <div class="col-md-4 p-5 d-flex flex-grow-1 justify-content-center align-items-center" style="height: 25vh;">
-        <div style="width: 100%;">
           <div class="row">
-            <button class="w-100 btn mb-2" style="font-weight: 500; color: white;" data-bs-toggle="modal"
-                    :data-bs-target="'#clientProfile-'+reservation.id">
-              Client Preview
-            </button>
-            <InstructorClientPreview :client="reservation.client"
-                                     :reservationId="reservation.id"/>
+            <div class="rentalObjectName align-items-center text-start" style="display: flex;">
+              <div>
+                <h1 class="display-6 me-1 card-title cut-text">{{ reservation.rentalObject.name }}</h1>
+              </div>
+              <hr>
+            </div>
           </div>
           <div class="row">
-            <button class="w-100 btn mb-2" style="font-weight: 500; background-color:#ffd055; color: white;" data-bs-toggle="modal"
-                    :data-bs-target="'#review-'+reservation.id">
-              Review
-            </button>
-            <InstructorReservationReview :id="reservation.id"
-                                         :reviews="reservation.reviews"
-                                         :resId="reservation.id"/>
+            <p class="h5" ><strong style="color:#008970;">Date:</strong> {{  getDateSpan(reservation) }}</p>
           </div>
           <div class="row">
-            <button class="w-100 btn" style="background-color:#e23c52; border: 1px solid #e23c52;
-                          font-weight: 500; color: white;" data-bs-toggle="modal"
-                    :data-bs-target="'#report-'+reservation.id">
-              Report
-            </button>
-            <InstructorReservationReport :id="reservation.id"
-                               :resId="reservation.id"
-                               :reports="reservation.reports"/>
+            <p class="h5"><strong style="color:#008970;">Profit:</strong> ${{ (calculateTotal(reservation)-reservation.income.value).toFixed(2) }}</p>
           </div>
-        </div>
 
-
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import axios from "axios";
 
 import InstructorClientPreview
   from "@/components/FishingInstructor/FishingInstructorPage/components/InstructorMainViews/InstructorReservations/InstructorClientPreview";
@@ -75,7 +76,6 @@ export default {
   components: {InstructorReservationReport, InstructorReservationReview, InstructorClientPreview},
   data() {
     return {
-      // images: [],
     }
   },
 
@@ -93,8 +93,6 @@ export default {
     getDateSpan(reservation) {
       let initDate = reservation.initDate, termDate = reservation.termDate;
       let date1 = new Date(initDate), date2 = new Date(termDate);
-      // date1.setHours(0, 0, 0);
-      // date2.setHours(0, 0, 0);
       let dateDisplay = date1.getDate() + '.' + (date1.getMonth() + 1) + '.' +  date1.getFullYear() + '.';
       if(date1.getFullYear() !== date2.getFullYear() || date1.getMonth() !== date2.getMonth() || date1.getDate() !== date2.getDate())
         dateDisplay += ' - ' + date2.getDate() + '.' + (date2.getMonth() + 1) + '.' +  date2.getFullYear() + '.';
@@ -166,6 +164,7 @@ img.rentalPhoto {
   display: flex;
   flex-direction: column;
   height: fit-content;
+  width: 45%;
   min-width: 0;
   word-wrap: break-word;
   background-color: #fff;
