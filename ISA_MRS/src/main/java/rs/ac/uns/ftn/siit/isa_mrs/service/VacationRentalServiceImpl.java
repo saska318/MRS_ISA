@@ -250,8 +250,6 @@ public class VacationRentalServiceImpl implements VacationRentalService{
                 vacationRental.getConductRules().add(conductRule);
             }
         });
-        vacationRental.setInitDate(vacationRentalDto.getInitDate());
-        vacationRental.setTermDate(vacationRentalDto.getTermDate());
         vacationRental.setName(vacationRentalDto.getName());
         vacationRental.setDescription(vacationRentalDto.getDescription());
         vacationRental.setCancellationFee(vacationRentalDto.getCancellationFee());
@@ -285,8 +283,6 @@ public class VacationRentalServiceImpl implements VacationRentalService{
         });
         Address address = modelMapper.map(vacationRentalDto.getAddress(), Address.class);
         addressRepo.save(address);
-        vacationRental.setInitDate(vacationRentalDto.getInitDate());
-        vacationRental.setTermDate(vacationRentalDto.getTermDate());
         vacationRental.setName(vacationRentalDto.getName());
         vacationRental.setCancellationFee(vacationRentalDto.getCancellationFee());
         vacationRental.setAddress(address);

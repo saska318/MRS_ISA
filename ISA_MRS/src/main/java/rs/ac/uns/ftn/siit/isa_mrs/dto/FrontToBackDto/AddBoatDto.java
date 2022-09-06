@@ -26,6 +26,4 @@ public class AddBoatDto implements Serializable {
     private final Double maxSpeed;
     private final Collection<NavigationEquipmentDto> navigationEquipment;
     private final Collection<FishingEquipmentDto> fishingEquipment;
-    private LocalDateTime initDate;
-    private LocalDateTime termDate;
 }

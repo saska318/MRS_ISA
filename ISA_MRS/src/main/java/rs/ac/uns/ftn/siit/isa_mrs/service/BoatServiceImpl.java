@@ -249,8 +249,6 @@ public class BoatServiceImpl implements BoatService{
                 boat.getNavigationEquipment().add(navigationEquipment);
             }
         });
-        boat.setInitDate(boatDto.getInitDate());
-        boat.setTermDate(boatDto.getTermDate());
         boat.setName(boatDto.getName());
         boat.setDescription(boatDto.getDescription());
         boat.setCancellationFee(boatDto.getCancellationFee());
@@ -317,8 +315,6 @@ public class BoatServiceImpl implements BoatService{
         });
         Address address = modelMapper.map(boatDto.getAddress(), Address.class);
         addressRepo.save(address);
-        boat.setInitDate(boatDto.getInitDate());
-        boat.setTermDate(boatDto.getTermDate());
         boat.setName(boatDto.getName());
         boat.setCancellationFee(boatDto.getCancellationFee());
         boat.setAddress(address);

@@ -19,6 +19,4 @@ public class AddVacationRentalDto implements Serializable {
     private final double cancellationFee;
     private final AddressDto address;
     private final Collection<RoomDto> rooms;
-    private LocalDateTime initDate;
-    private LocalDateTime termDate;
 }
